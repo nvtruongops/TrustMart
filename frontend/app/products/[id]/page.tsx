@@ -6,7 +6,6 @@ import { ShieldCheck, Eye, Heart, MapPin, Calendar, User, ArrowLeft } from 'luci
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '@/components/landing/Header'
-import Footer from '@/components/landing/Footer'
 
 // Mock data cho chi tiết sản phẩm
 const productDetail = {
@@ -243,8 +242,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
-
-      <Footer />
     </main>
   )
 }

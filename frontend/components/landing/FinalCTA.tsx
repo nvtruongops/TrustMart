@@ -1,100 +1,64 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { ArrowRight, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ArrowRight, Sparkles } from 'lucide-react'
+import Link from 'next/link'
 
 export default function FinalCTA() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
+    return (
+        <section className="py-24 relative overflow-hidden">
+            {/* Background Gradient */}
+            <div className="absolute inset-0 bg-brand-green">
+                <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/20 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-yellow/10 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/3" />
+            </div>
 
-  return (
-    <section ref={ref} className="py-32 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-10 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute bottom-10 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl"
-        />
-      </div>
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center text-white max-w-4xl mx-auto"
-        >
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-            Sẵn Sàng Bắt Đầu?
-          </h2>
-          
-          <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
-            Tham gia cộng đồng hàng nghìn người đang mua bán 
-            đồ cũ an toàn, minh bạch và thông minh hơn.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button 
-              size="lg"
-              className="bg-white text-emerald-600 hover:bg-slate-100 hover:text-emerald-700 px-10 py-8 text-xl rounded-full shadow-2xl group border-0"
-            >
-              Đăng ký Miễn phí
-              <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            
-            <Button 
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white bg-transparent hover:bg-white/10 px-10 py-8 text-xl rounded-full"
-            >
-              Tìm hiểu thêm
-            </Button>
-          </div>
-          
-          {/* Trust Badges */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            className="mt-16 flex flex-wrap justify-center items-center gap-6 md:gap-12 text-white/90 font-medium"
-          >
-            <div className="flex items-center gap-2">
-              <div className="bg-white/20 p-1 rounded-full"><Check className="w-4 h-4" /></div>
-              <span>Miễn phí đăng ký</span>
+            <div className="container mx-auto px-4 relative z-10 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="max-w-4xl mx-auto"
+                >
+                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2 rounded-full border border-white/20 mb-8 whitespace-nowrap">
+                        <Sparkles className="w-5 h-5 text-brand-yellow" />
+                        <span className="text-white font-mono font-medium tracking-wide">Join 50,000+ Verified Users</span>
+                    </div>
+
+                    <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-8 leading-[1.1]">
+                        Ready to trade with <br />
+                        <span className="text-brand-yellow relative inline-block">
+                            Confidence?
+                            <svg className="absolute w-full h-4 -bottom-1 left-0 text-brand-orange -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                                <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="8" fill="none" opacity="0.6" />
+                            </svg>
+                        </span>
+                    </h2>
+
+                    <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto leading-relaxed">
+                        Stop worrying about scams. Start buying and selling with AI authentication and expert grading today.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                        <Link href="/sell" className="group relative px-10 py-5 bg-brand-orange rounded-full overflow-hidden shadow-2xl hover:shadow-brand-orange/40 transition-all hover:-translate-y-1 w-full sm:w-auto">
+                            <div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-500 ease-in-out -translate-x-full skew-x-12" />
+                            <span className="relative z-10 font-bold text-white text-lg flex items-center justify-center gap-2">
+                                Start Selling Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                        </Link>
+
+                        <Link href="/shop" className="group px-10 py-5 bg-white text-brand-green rounded-full font-bold text-lg hover:bg-gray-100 transition-colors w-full sm:w-auto flex items-center justify-center gap-2">
+                            Explore Treasures
+                        </Link>
+                    </div>
+
+                    <p className="mt-8 text-white/40 text-sm">
+                        No credit card required for browsing. 100% Buyer Protection.
+                    </p>
+                </motion.div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="bg-white/20 p-1 rounded-full"><Check className="w-4 h-4" /></div>
-              <span>Không cần thẻ tín dụng</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="bg-white/20 p-1 rounded-full"><Check className="w-4 h-4" /></div>
-              <span>Hủy bất cứ lúc nào</span>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  )
+        </section>
+    )
 }

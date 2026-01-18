@@ -23,7 +23,7 @@ export default function HeroSection() {
           >
             <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
             <span className="text-brand-green font-bold text-xs uppercase tracking-wider font-mono">
-              Premium Secondhand
+              Đồ cũ Đáng tin cậy
             </span>
           </motion.div>
 
@@ -48,7 +48,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Discover authenticated luxury treasures. AI-verified, expert-checked, and delivered with love. Join the circular revolution.
+            Discover authenticated quality treasures. AI-verified, expert-checked, and delivered with trust. Join the circular revolution.
           </motion.p>
 
           <motion.div
@@ -94,7 +94,7 @@ export default function HeroSection() {
           <div className="relative aspect-square w-full max-w-[600px] mx-auto animate-float">
             <Image
               src="/hero-collage.png"
-              alt="Premium Items Collage"
+              alt="Quality Items Collage"
               fill
               className="object-contain drop-shadow-2xl"
               priority

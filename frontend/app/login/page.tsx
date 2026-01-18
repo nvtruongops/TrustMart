@@ -7,22 +7,42 @@ import { motion } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
 import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react'
 import Image from 'next/image'
+import RoleSelectionModal from '@/components/RoleSelectionModal'
 
 export default function LoginPage() {
-    const { login, loginWithGoogle } = useAuth()
+    const { loginWithGoogle } = useAuth()
     const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [showRoleModal, setShowRoleModal] = useState(false)
+    const [availableRoles, setAvailableRoles] = useState<('user' | 'reviewer' | 'admin')[]>([])
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
 
-        const success = login(email, password)
-        if (!success) {
+        // Mock authentication - check credentials
+        const mockUsers = [
+            { email: 'user1@trustmart.com', password: 'user123', roles: ['user' as const] },
+            { email: 'seller@trustmart.com', password: 'seller123', roles: ['user' as const] },
+            { email: 'reviewer@trustmart.com', password: 'reviewer123', roles: ['user' as const, 'reviewer' as const] },
+            { email: 'admin@trustmart.com', password: 'admin123', roles: ['user' as const, 'reviewer' as const, 'admin' as const] },
+        ]
+
+        const user = mockUsers.find(u => u.email === email && u.password === password)
+        
+        if (user) {
+            setAvailableRoles(user.roles)
+            setShowRoleModal(true)
+        } else {
             setError('Email hoặc mật khẩu không đúng')
         }
+    }
+
+    const handleRoleSelection = (role: 'user' | 'reviewer' | 'admin') => {
+        setShowRoleModal(false)
+        router.push(`/dashboard/${role}`)
     }
 
     const handleGoogleLogin = () => {
@@ -32,13 +52,21 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-brand-cream">
 
+            {/* Role Selection Modal */}
+            <RoleSelectionModal
+                isOpen={showRoleModal}
+                onClose={() => setShowRoleModal(false)}
+                onSelectRole={handleRoleSelection}
+                availableRoles={availableRoles}
+            />
+
             {/* Left: Login Form */}
             <div className="flex items-center justify-center p-8 lg:p-16">
                 <div className="w-full max-w-md space-y-8">
 
                     <div className="text-center lg:text-left">
                         <Link href="/" className="inline-block text-2xl font-display font-bold text-brand-orange mb-8">
-                            SecondLife.
+                            TrustMart.
                         </Link>
                         <h1 className="text-4xl font-display font-bold text-brand-green mb-2">Welcome Back</h1>
                         <p className="text-brand-green/60">Enter your details to access your account.</p>
@@ -115,10 +143,10 @@ export default function LoginPage() {
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                         <p className="text-xs font-semibold text-blue-800 mb-2">Tài khoản Demo:</p>
                         <div className="text-xs text-blue-700 space-y-1">
-                            <div>User: user1@secondlife.com / user123</div>
-                            <div>Seller: seller@secondlife.com / seller123</div>
-                            <div>Reviewer: reviewer@secondlife.com / reviewer123</div>
-                            <div>Admin: admin@secondlife.com / admin123</div>
+                            <div>👤 User: user1@trustmart.com / user123</div>
+                            <div>🛍️ Seller: seller@trustmart.com / seller123</div>
+                            <div>🛡️ Reviewer: reviewer@trustmart.com / reviewer123 (User + Reviewer)</div>
+                            <div>⚙️ Admin: admin@trustmart.com / admin123 (All roles)</div>
                         </div>
                     </div>
 
@@ -131,18 +159,19 @@ export default function LoginPage() {
 
             {/* Right: Feature Image with actual image */}
             <div className="hidden lg:block relative overflow-hidden order-2">
-                {/* Background Image */}
+                {/* Background Image - Optimized for clarity */}
                 <Image
                     src="/login_feature.png"
                     alt="Expert Verification Process"
                     fill
                     className="object-cover"
+                    style={{ imageRendering: '-webkit-optimize-contrast' }}
                     priority
                 />
 
-                {/* Gradient Overlay for Text Readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-green/90 via-brand-green/40 to-transparent mix-blend-multiply"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                {/* Subtle overlay for text contrast - lighter to show image better */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-brand-green/20 to-transparent"></div>
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-end pb-20 px-12 text-center z-10">
@@ -151,10 +180,10 @@ export default function LoginPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight">
+                        <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 leading-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] [text-shadow:_2px_2px_4px_rgb(0_0_0_/_80%)]">
                             Trust is <br /> <span className="text-brand-yellow">In the Details.</span>
                         </h2>
-                        <p className="text-lg text-white/90 max-w-md mx-auto mb-10 font-light">
+                        <p className="text-lg text-white max-w-md mx-auto mb-10 font-light drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] [text-shadow:_1px_1px_3px_rgb(0_0_0_/_70%)]">
                             Every item is physically inspected by certified experts to ensure 100% authenticity.
                         </p>
                     </motion.div>

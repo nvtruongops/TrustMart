@@ -1,19 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* Earth & Green Palette */
+  /* True Brand Palette per Design System */
   --color-brand-cream: #FAF9F6;
-  /* Off-white/Alabaster */
-  --color-brand-orange: #8D6E63;
-  /* Earth Brown (replacing Orange) */
+  /* Background Neutral */
+
   --color-brand-green: #2E5C31;
-  /* Forest Green (Darker, more organic) */
-  --color-brand-blue: #5D8AA8;
-  /* Air Blue (Muted) */
+  /* Primary Trust */
+  --color-brand-green-light: #E8F5E9;
+  /* Secondary Green Background */
+
+  --color-brand-gold: #DAA520;
+  /* Secondary Luxury (was yellow) */
   --color-brand-yellow: #DAA520;
-  /* Goldenrod (Muted Gold) */
+  /* Alias for backward compatibility */
+
+  --color-brand-earth: #8D6E63;
+  /* Earthy Brown (Warmth) */
+  --color-brand-brown: #8D6E63;
+  /* Alias */
+
+  --color-brand-orange: #D97706;
+  /* Accent Orange (Hot/New) - Adjusted from brown to real orange */
+
+  --color-brand-blue: #5D8AA8;
+  /* Muted Blue (Air) */
   --color-brand-purple: #583929;
-  /* Dark Earthy Brown (replacing Purple) */
+  /* Deep Text/Dark Brown */
 
   /* Typography */
   --font-display: "Outfit", sans-serif;

@@ -19,7 +19,7 @@ const testimonials = [
   {
     name: "Sarah L.",
     role: "Eco Warrior",
-    text: "Finally, a platform that makes second-hand feel premium. No shady meetups, just quality items.",
+    text: "Finally, a platform that makes second-hand feel trustworthy. No shady meetups, just quality items.",
     rating: 5
   }
 ]
@@ -29,7 +29,7 @@ export default function Testimonials() {
     <section className="py-24 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <span className="text-brand-orange font-mono font-bold uppercase tracking-wider text-sm mb-4 block">Community Stories</span>
+          <span className="text-brand-earth font-mono font-bold uppercase tracking-wider text-sm mb-4 block">Community Stories</span>
           <h2 className="text-4xl md:text-5xl font-display font-bold text-brand-green">
             Loved by <span className="text-brand-orange">Thousands</span>
           </h2>

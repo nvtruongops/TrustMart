@@ -7,13 +7,11 @@ import { CheckCircle, ShieldCheck, UserCheck } from 'lucide-react'
 export default function BuyerExperience() {
     return (
         <section className="py-32 bg-brand-green text-white overflow-hidden relative">
-            {/* Background Texture */}
-            <div className="absolute inset-0 opacity-5 bg-[url('/noise.png')] mix-blend-overlay"></div>
 
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-                    {/* Left: Image (Expert Helping Buyer) */}
+                    {/* Left: Image (Expert Consulting) */}
                     <motion.div
                         className="relative h-[600px] w-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10"
                         initial={{ x: -50, opacity: 0 }}
@@ -21,19 +19,19 @@ export default function BuyerExperience() {
                         viewport={{ once: true }}
                     >
                         <Image
-                            src="/expert-helping-buyer.png"
-                            alt="Expert helping a happy buyer"
+                            src="/expert-consulting.png"
+                            alt="Expert consulting personally with buyer"
                             fill
                             className="object-cover"
                         />
 
                         {/* Overlay Text */}
                         <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
-                            <p className="text-white font-display font-medium text-lg">
-                                "We check every detail, so you don't have to."
+                            <p className="text-white font-display font-medium text-lg italic">
+                                "Không chỉ là kiểm định, chúng tôi đồng hành cùng bạn trong từng giao dịch."
                             </p>
                             <p className="text-white/60 font-mono text-sm mt-2">
-                                — James, Senior Luxury Authenticator
+                                — Từ đội ngũ chuyên gia TrustMart
                             </p>
                         </div>
                     </motion.div>

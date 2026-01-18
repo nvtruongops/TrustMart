@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 export default function ReviewerSpotlight() {
     return (
-        <section className="py-24 bg-white relative">
+        <section className="py-24 bg-gradient-to-b from-white to-brand-cream/20 relative">
             {/* Decorative Blob */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-blue/10 rounded-full blur-[100px] pointer-events-none"></div>
 

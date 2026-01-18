@@ -12,8 +12,18 @@ const spaceMono = Space_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'SecondLife - Premium Marketplace',
-  description: 'A vibrant marketplace for premium secondhand goods.',
+  title: 'TrustMart - Đồ cũ Đáng tin cậy',
+  description: 'Nền tảng mua bán đồ cũ với AI xác thực. An toàn, minh bạch cho mọi người.',
+  icons: {
+    icon: '/logo-shield.png',
+    shortcut: '/logo-shield.png',
+    apple: '/logo-shield.png',
+  },
+  openGraph: {
+    title: 'TrustMart - Đồ cũ Đáng tin cậy',
+    description: 'Nền tảng mua bán đồ cũ với AI xác thực. An toàn, minh bạch cho mọi người.',
+    images: ['/logo-shield.png'],
+  },
 }
 
 export default function RootLayout({

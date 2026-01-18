@@ -1,9 +1,6 @@
 # Sensitive documentation
 doc/
 
-# Public assets (images, etc.)
-frontend/public/
-
 # Dependencies
 frontend/node_modules/
 

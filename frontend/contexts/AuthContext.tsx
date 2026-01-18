@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         // Check local storage on mount
-        const storedUser = localStorage.getItem('secondlife_user')
+        const storedUser = localStorage.getItem('trustmart_user')
         if (storedUser) {
             setUser(JSON.parse(storedUser))
         }
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
             
             setUser(user)
-            localStorage.setItem('secondlife_user', JSON.stringify(user))
+            localStorage.setItem('trustmart_user', JSON.stringify(user))
             
             // Redirect to home or previous page
             router.push('/')
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
         
         setUser(mockGoogleUser)
-        localStorage.setItem('secondlife_user', JSON.stringify(mockGoogleUser))
+        localStorage.setItem('trustmart_user', JSON.stringify(mockGoogleUser))
         router.push('/')
     }
 
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
             
             setUser(user)
-            localStorage.setItem('secondlife_user', JSON.stringify(user))
+            localStorage.setItem('trustmart_user', JSON.stringify(user))
             
             // Redirect to home
             router.push('/')
@@ -110,7 +110,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = () => {
         setUser(null)
-        localStorage.removeItem('secondlife_user')
+        localStorage.removeItem('trustmart_user')
         router.push('/login')
     }
 
