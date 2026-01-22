@@ -1,16 +1,15 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bell, Search, X, Grid3x3, Laptop, Shirt, BookOpen, ChevronDown } from 'lucide-react'
+import { Bell, Search, ShoppingCart, Package, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 
 export default function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
   const [searchQuery, setSearchQuery] = useState('')
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
-  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [cartItemCount] = useState(0) // Mock cart count
   const [showNotificationPrompt, setShowNotificationPrompt] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [notificationHoverTimeout, setNotificationHoverTimeout] = useState<NodeJS.Timeout | null>(null)
@@ -69,84 +68,23 @@ export default function Header() {
     }
   }
 
-  const categories = [
-    {
-      name: 'Tất cả',
-      href: '/products',
-      Icon: Grid3x3,
-      subcategories: []
-    },
-    {
-      name: 'Điện tử',
-      href: '/products?category=electronics',
-      Icon: Laptop,
-      subcategories: [
-        { name: 'Điện thoại', href: '/products?category=phone' },
-        { name: 'Laptop', href: '/products?category=laptop' },
-        { name: 'Máy tính bảng', href: '/products?category=tablet' },
-        { name: 'Tai nghe', href: '/products?category=headphone' },
-        { name: 'Đồng hồ thông minh', href: '/products?category=smartwatch' },
-      ]
-    },
-    {
-      name: 'Thời trang',
-      href: '/products?category=fashion',
-      Icon: Shirt,
-      subcategories: [
-        { name: 'Quần áo', href: '/products?category=clothing' },
-        { name: 'Giày dép', href: '/products?category=shoes' },
-        { name: 'Túi xách', href: '/products?category=bags' },
-        { name: 'Phụ kiện', href: '/products?category=accessories' },
-      ]
-    },
-    {
-      name: 'Góc Sinh Viên',
-      href: '/products?category=student',
-      Icon: BookOpen,
-      subcategories: [
-        { name: 'Sách giáo trình', href: '/products?category=textbook' },
-        { name: 'Truyện', href: '/products?category=novel' },
-        { name: 'Văn phòng phẩm', href: '/products?category=stationery' },
-        { name: 'Đồ dùng học tập', href: '/products?category=study-tools' },
-      ]
-    },
+  // Quick navigation items
+  const quickNavItems = [
+    { name: 'Sản phẩm', href: '/products', icon: Package },
+    { name: 'Khám phá', href: '/explore', icon: MapPin },
   ]
 
-  const handleMouseEnter = (categoryName: string) => {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout)
-    }
-    const timeout = setTimeout(() => {
-      setHoveredCategory(categoryName)
-    }, 200) // 200ms delay
-    setHoverTimeout(timeout)
-  }
-
-  const handleMouseLeave = () => {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout)
-    }
-    // Delay trước khi đóng để user có thể di chuột vào dropdown
-    const timeout = setTimeout(() => {
-      setHoveredCategory(null)
-    }, 300)
-    setHoverTimeout(timeout)
-  }
-
-  const handleDropdownEnter = () => {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout)
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      // Navigate to products page with search query
+      window.location.href = `/products?search=${encodeURIComponent(searchQuery)}`
     }
   }
 
-  const handleDropdownLeave = () => {
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout)
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch()
     }
-    const timeout = setTimeout(() => {
-      setHoveredCategory(null)
-    }, 100)
-    setHoverTimeout(timeout)
   }
 
   return (
@@ -156,11 +94,11 @@ export default function Header() {
       animate={{ y: 0 }}
       transition={{ type: 'spring', damping: 20 }}
     >
-      <div className="bg-white/80 backdrop-blur-md rounded-full px-6 py-4 flex items-center gap-8 shadow-xl border border-white/50 w-full max-w-6xl justify-between">
+      <div className="bg-white/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-4 shadow-xl border border-white/50 w-full max-w-5xl">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <div className="relative w-10 h-10 overflow-hidden">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
+          <div className="relative w-8 h-8 overflow-hidden">
             <Image
               src="/logo-shield.png"
               alt="TrustMart Logo"
@@ -168,156 +106,90 @@ export default function Header() {
               className="object-contain scale-200"
             />
           </div>
-          <span className="font-display font-bold text-3xl text-brand-green tracking-tight">
+          <span className="font-display font-bold text-2xl text-brand-green tracking-tight hidden sm:block">
             Trust<span className="text-brand-orange">Mart</span>.
           </span>
         </Link>
 
-        {/* Navigation - Desktop */}
-        <AnimatePresence mode="wait">
-          {!isSearchOpen ? (
-            <motion.nav
-              key="nav"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="hidden md:flex items-center gap-6 flex-1 justify-center relative"
-            >
-              {categories.map((item) => (
-                <div
-                  key={item.name}
-                  className="relative"
-                  onMouseEnter={() => handleMouseEnter(item.name)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <Link
-                    href={item.href}
-                    className="text-sm font-medium text-brand-green/80 hover:text-brand-orange transition-colors whitespace-nowrap flex items-center gap-1"
-                  >
-                    {item.name}
-                    {item.subcategories.length > 0 && (
-                      <ChevronDown className="w-3 h-3" />
-                    )}
-                  </Link>
+        {/* Quick Nav Icons - Show icon only, name on hover */}
+        <div className="hidden md:flex items-center gap-1">
+          {quickNavItems.map((item) => {
+            const Icon = item.icon
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="group relative p-2.5 rounded-full hover:bg-brand-cream transition-all"
+                title={item.name}
+              >
+                <Icon className="w-5 h-5 text-brand-green/70 group-hover:text-brand-orange transition-colors" />
+                {/* Tooltip on hover */}
+                <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  {item.name}
+                </span>
+              </Link>
+            )
+          })}
+        </div>
 
-                  {/* Dropdown Menu */}
-                  <AnimatePresence>
-                    {hoveredCategory === item.name && item.subcategories.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        onMouseEnter={handleDropdownEnter}
-                        onMouseLeave={handleDropdownLeave}
-                        className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 min-w-[200px] z-50"
-                      >
-                        {item.subcategories.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={sub.href}
-                            className="block px-4 py-2 text-sm text-brand-green/80 hover:bg-brand-cream hover:text-brand-orange transition-colors"
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </motion.nav>
-          ) : (
-            <motion.div
-              key="search"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="hidden md:flex items-center gap-4 flex-1 justify-center"
-            >
-              {/* Category Icons */}
-              <div className="flex items-center gap-2">
-                {categories.map((item) => {
-                  const Icon = item.Icon
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-brand-cream transition-colors group"
-                      title={item.name}
-                    >
-                      <Icon className="w-5 h-5 text-brand-green/70 group-hover:text-brand-orange transition-colors" />
-                    </Link>
-                  )
-                })}
-              </div>
-
-              {/* Search Input */}
-              <div className="flex-1 max-w-md relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tìm kiếm sản phẩm..."
-                  className="w-full px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:border-brand-orange bg-white/90"
-                  autoFocus
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Actions */}
-        <div className="flex items-center gap-4 shrink-0">
+        {/* Search Bar - Always visible */}
+        <div className="flex-1 max-w-lg relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Tìm kiếm sản phẩm..."
+            className="w-full pl-4 pr-10 py-2.5 rounded-full border border-slate-200 focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 bg-white/90 text-sm transition-all"
+          />
           <button
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="p-2 hover:bg-brand-cream rounded-full transition-colors"
+            onClick={searchQuery ? handleSearch : undefined}
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-brand-cream transition-colors"
           >
-            {isSearchOpen ? (
-              <X className="w-5 h-5 text-brand-green" />
+            {searchQuery ? (
+              <Search className="w-4 h-4 text-brand-orange" />
             ) : (
-              <Search className="w-5 h-5 text-brand-green" />
+              <Search className="w-4 h-4 text-slate-400" />
             )}
           </button>
+        </div>
 
+        {/* Actions */}
+        <div className="flex items-center gap-2 shrink-0">
           {/* Notification Button */}
-          <div
-            className="relative"
-            onMouseEnter={handleNotificationMouseEnter}
-            onMouseLeave={handleNotificationMouseLeave}
-          >
+          <div className="relative">
             <button
-              onClick={handleNotificationClick}
-              className="p-2 hover:bg-brand-cream rounded-full transition-colors relative"
+              onClick={() => setShowNotificationPrompt(!showNotificationPrompt)}
+              className="group relative p-2 hover:bg-brand-cream rounded-full transition-colors"
             >
-              <Bell className="w-5 h-5 text-brand-green" />
+              <Bell className="w-5 h-5 text-brand-green/70 group-hover:text-brand-orange transition-colors" />
               {isLoggedIn && (
                 <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-brand-orange rounded-full border-2 border-white"></span>
               )}
+              {/* Tooltip */}
+              <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+                Thông báo
+              </span>
             </button>
 
-            {/* Notification Panel */}
+            {/* Notification Panel - Click to toggle */}
             <AnimatePresence>
               {showNotificationPrompt && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  onMouseEnter={handlePromptMouseEnter}
-                  onMouseLeave={handlePromptMouseLeave}
                   className="absolute top-full right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 w-[380px] z-50 overflow-hidden"
                 >
                   {/* Header */}
-                  <div className="px-5 py-4 border-b border-gray-100">
+                  <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h3 className="font-bold text-brand-green text-lg">Thông báo</h3>
+                    <button
+                      onClick={() => setShowNotificationPrompt(false)}
+                      className="text-slate-400 hover:text-slate-600 text-sm"
+                    >
+                      ✕
+                    </button>
                   </div>
 
                   {/* Content */}
@@ -328,11 +200,17 @@ export default function Header() {
                         <Bell className="w-8 h-8 text-brand-orange" />
                       </div>
                       <h4 className="font-semibold text-brand-green mb-2">Đăng nhập để nhận thông báo</h4>
-                      <p className="text-sm text-gray-600">Cập nhật đơn hàng, tin nhắn và nhiều hơn nữa</p>
+                      <p className="text-sm text-gray-600 mb-4">Cập nhật đơn hàng, tin nhắn và nhiều hơn nữa</p>
+                      <Link
+                        href="/login"
+                        className="inline-block bg-brand-green text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-brand-green/90 transition-colors"
+                      >
+                        Đăng nhập ngay
+                      </Link>
                     </div>
                   ) : (
                     // Notifications list
-                    <div className="max-h-[400px] overflow-y-auto">
+                    <div className="max-h-[350px] overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                       {mockNotifications.map((notification) => (
                         <div
                           key={notification.id}
@@ -358,18 +236,39 @@ export default function Header() {
                     </div>
                   )}
 
-                  {/* Footer - Only show when logged in */}
+                  {/* Footer - View all notifications */}
                   {isLoggedIn && (
-                    <div className="px-5 py-3 border-t border-gray-100 text-center">
-                      <button className="text-sm text-brand-orange font-semibold hover:text-brand-orange/80 transition-colors">
-                        Xem tất cả thông báo
-                      </button>
+                    <div className="px-5 py-4 border-t border-gray-100 bg-slate-50/50">
+                      <Link
+                        href="/notifications"
+                        className="block text-center text-sm text-brand-orange font-semibold hover:text-brand-orange/80 transition-colors"
+                        onClick={() => setShowNotificationPrompt(false)}
+                      >
+                        Hiện toàn bộ thông báo →
+                      </Link>
                     </div>
                   )}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+
+          {/* Cart Button */}
+          <Link
+            href="/cart"
+            className="group relative p-2 hover:bg-brand-cream rounded-full transition-colors"
+          >
+            <ShoppingCart className="w-5 h-5 text-brand-green/70 group-hover:text-brand-orange transition-colors" />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+            {/* Tooltip */}
+            <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1 bg-slate-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
+              Giỏ hàng
+            </span>
+          </Link>
 
           <Link href="/register" className="text-brand-green px-5 py-2 rounded-full font-bold text-sm hover:bg-brand-cream transition-colors">
             Đăng ký
