@@ -67,7 +67,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   return (
     <main className="min-h-screen bg-brand-cream">
       <Header />
-      
+
       <div className="pt-32 pb-16">
         <div className="container mx-auto px-4">
           {/* Back Button */}
@@ -90,12 +90,12 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   fill
                   className="object-cover"
                 />
-                
+
                 {/* Trust Badge */}
                 <div className="absolute top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-full font-bold shadow-lg">
                   {productDetail.trustScore}/100
                 </div>
-                
+
                 {productDetail.hasReview && (
                   <div className="absolute top-4 left-4 bg-purple-500 text-white px-4 py-2 rounded-full font-semibold flex items-center gap-2 shadow-lg">
                     <ShieldCheck className="w-4 h-4" />
@@ -110,9 +110,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
-                    className={`relative aspect-square rounded-xl overflow-hidden ${
-                      selectedImage === idx ? 'ring-4 ring-brand-orange' : 'opacity-60 hover:opacity-100'
-                    } transition-all`}
+                    className={`relative aspect-square rounded-xl overflow-hidden ${selectedImage === idx ? 'ring-4 ring-brand-orange' : 'opacity-60 hover:opacity-100'
+                      } transition-all`}
                   >
                     <Image src={img} alt={`View ${idx + 1}`} fill className="object-cover" />
                   </button>
@@ -128,7 +127,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               >
                 <div className="text-sm text-brand-green/60 mb-2">{productDetail.category}</div>
                 <h1 className="text-4xl font-bold text-brand-green mb-4">{productDetail.name}</h1>
-                
+
                 <div className="flex items-baseline gap-4 mb-6">
                   <span className="text-4xl font-bold text-emerald-600">
                     {productDetail.price.toLocaleString('vi-VN')}đ
@@ -217,9 +216,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <div className="space-y-4">
                 {productDetail.aiVerification.checks.map((check, idx) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      check.passed ? 'bg-emerald-500' : 'bg-red-500'
-                    }`}>
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${check.passed ? 'bg-emerald-500' : 'bg-red-500'
+                      }`}>
                       <span className="text-white text-xs">✓</span>
                     </div>
                     <span className="text-slate-700">{check.name}</span>
